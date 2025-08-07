@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pickups")
@@ -39,7 +40,13 @@ public class PickupRequestController {
         return ResponseEntity.ok(result);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PickupResponseDTO> updateById(@PathVariable Long id,@RequestBody PickupRequestDTO dto ){
+        Optional <PickupRequest> updated = service.updateRequest(id,dto);
 
-
+        return updated
+                .map(entity -> ResponseEntity.ok(service.mapToResponseDTO(entity)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }

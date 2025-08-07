@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PickupRequestService {
@@ -47,6 +48,24 @@ public class PickupRequestService {
 
     public List <PickupRequest> findByStatus(String status){
         return repository.findByStatus(status);
+    }
+
+    public Optional<PickupRequest> updateRequest (Long id, PickupRequestDTO dto){
+
+        Optional<PickupRequest> optional = repository.findById(id);
+
+        if(optional.isPresent()){
+            PickupRequest request = optional.get();
+            request.setWasteType(dto.getWasteType());
+            request.setLocation(dto.getLocation());
+            request.setNotes(dto.getNotes());
+            request.setStatus(dto.getStatus());
+
+            PickupRequest updated = repository.save(request);
+            return Optional.of(updated);
+        }
+
+        return Optional.empty();
     }
 
 

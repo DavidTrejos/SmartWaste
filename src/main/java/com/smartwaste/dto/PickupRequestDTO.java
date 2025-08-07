@@ -14,5 +14,7 @@ public class PickupRequestDTO {
     @NotBlank(message = "Location is required")
     private String location;
 
+    private String status;
+
     private String notes;
 }
